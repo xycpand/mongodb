@@ -52,8 +52,17 @@ public class MongoDB4CRUDTest {
 	        users = null;
 	    }
 	    
-	    public void print(Object o) {
+	    private void print(Object o) {
 	        System.out.println(o);
+	    }
+
+	    private void printN(WriteResult writeResult) {
+	    	 if(writeResult.wasAcknowledged()){
+	        	 //getN()获取影响行数
+	 	       print("影响行数："+writeResult.getN());
+	        }else{
+               print("write was not acknowledged");
+	        }
 	    }
 	    
 	    /**
@@ -61,7 +70,6 @@ public class MongoDB4CRUDTest {
 	     * @author panda
 	     * @createDate 2016-4-27 上午10:22:40
 	     */
-	    @Test
 	    public void queryAll() {
 	        print("查询users的所有数据：");
 	        //db游标
@@ -80,15 +88,14 @@ public class MongoDB4CRUDTest {
 	        DBObject user = new BasicDBObject();
 	        user.put("name", "panda");
 	        user.put("age", 24);
-	        //getN()获取影响行数
-	       // print(users.save(user).getN());
-	        
+	        WriteResult writeResult = users.save(user);
+	        printN(writeResult);
 	        //扩展字段，随意添加字段，不影响现有数据
 	        user.put("sex", "男");
-	       // print(users.save(user).getN());
 	        
 	        //添加多条数据，传递Array对象
-	        print(users.insert(user, new BasicDBObject("name", "tom")).getN());
+	         writeResult = users.insert(user, new BasicDBObject("name", "tom"));
+		      printN(writeResult);
 	        //添加List集合
 	        List<DBObject> list = new ArrayList<DBObject>();
 	        list.add(user);
@@ -96,7 +103,8 @@ public class MongoDB4CRUDTest {
 	        user.put("age", 22);
 	        list.add(user2);
 	        //添加List集合
-	        print(users.insert(list).getN());
+	         writeResult = users.insert(list);
+		     printN(writeResult);
 	        
 	        //查询下数据，看看是否添加成功
 	        print("count: " + users.count());

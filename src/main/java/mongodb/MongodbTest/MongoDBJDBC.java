@@ -20,7 +20,7 @@ public class MongoDBJDBC {
 		 createCollection();
 		 getCollection();
 		 insertDocument();
-		 IterateDocuments();
+		 iterateDocuments();
 		 updateDocument();
 		 delFirstDocument();
     }  
@@ -111,7 +111,7 @@ public class MongoDBJDBC {
 	      }
 	   }
 	  
-	  public static void IterateDocuments(){
+	  public static void iterateDocuments(){
 	      try{   
 	         // 连接到 mongodb 服务
 	         MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
